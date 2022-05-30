@@ -16,6 +16,7 @@ const createEthereumContract = () => {
 };
 
 export const BankContextProvider = ({ children }) => {
+    const [formData, setformData] = useState({ depositAmount: "", withdrawAmount: "" });
     const [currentAccount, setCurrentAccount] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
@@ -53,25 +54,17 @@ export const BankContextProvider = ({ children }) => {
         }
     };
 
-    //   REFACTOR to DEPOSIT AND WITHDRAW
-    const sendBank = async () => {
+    const deposit = async () => {
         try {
             if (ethereum) {
-                const { addressTo, amount, keyword, message } = formData;
+                const { depositAmount } = formData;
+
+                // load the ABI from local file
+                // defined above
                 const BankContract = createEthereumContract();
-                const parsedAmount = ethers.utils.parseEther(amount);
+                let parsedAmount = ethers.utils.parseEther(depositAmount)
 
-                await ethereum.request({
-                    method: "eth_sendBank",
-                    params: [{
-                        from: currentAccount,
-                        to: addressTo,
-                        gas: "0x5208",
-                        value: parsedAmount._hex,
-                    }],
-                });
-
-                const BankHash = await BankContract.addToBlockchain(addressTo, parsedAmount, message, keyword);
+                var BankHash = await BankContract.deposit({ value: parsedAmount })
 
                 setIsLoading(true);
                 console.log(`Loading - ${BankHash.hash}`);
@@ -79,19 +72,45 @@ export const BankContextProvider = ({ children }) => {
                 console.log(`Success - ${BankHash.hash}`);
                 setIsLoading(false);
 
-                const BanksCount = await BankContract.getBankCount();
-
-                setBankCount(BanksCount.toNumber());
                 window.location.reload();
             } else {
                 console.log("No ethereum object");
             }
         } catch (error) {
             console.log(error);
-
             throw new Error("No ethereum object");
         }
-    };
+    }
+
+    const withdraw = async () => {
+        try {
+            if (ethereum) {
+                const { withdrawAmount } = formData;
+
+                // load the ABI from local file
+                // defined above
+                const bankContract = createEthereumContract();
+                let parsedAmount = ethers.utils.parseEther(withdrawAmount)
+
+                var BankHash = await bankContract.withdraw(parsedAmount)
+
+
+                setIsLoading(true);
+                console.log(`Loading - ${BankHash.hash}`);
+                await BankHash.wait();
+                console.log(`Success - ${BankHash.hash}`);
+                setIsLoading(false);
+
+                window.location.reload();
+            } else {
+                console.log("No ethereum object");
+            }
+        } catch (error) {
+            console.log(error);
+            throw new Error("No ethereum object");
+        }
+
+    }
 
     useEffect(() => {
         checkIfWalletIsConnect();
@@ -103,7 +122,10 @@ export const BankContextProvider = ({ children }) => {
                 connectWallet,
                 currentAccount,
                 isLoading,
-                handleChange
+                formData,
+                handleChange,
+                deposit,
+                withdraw
             }}
         >
             {children}
