@@ -8,11 +8,9 @@ function App() {
 
   return (
     <div className="App">
-        <p>
-          <button type="button" onClick={increment}>
-            count is: {count}
-          </button>
-        </p>
+        <h1>Bank</h1><br/>
+        <p>Takes ETH as the currency.</p><br/>
+        <input/>
     </div>
   )
 }
