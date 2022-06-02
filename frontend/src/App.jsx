@@ -1,7 +1,9 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { useBankContext } from './context/BankContext'
+
+import { v4 as uuid } from 'uuid';
 
 function App() {
   const {
@@ -9,14 +11,20 @@ function App() {
     currentAccount,
     isLoading,
     formData,
+    balance,
     handleChange,
     deposit,
-    withdraw
+    withdraw,
+    loan
   } = useBankContext()
+
+  useEffect(() => {
+  }, [balance])
 
 
   const Input = ({ placeholder, name, type, value, handleChange }) => (
     <input
+      key={uuid()}
       placeholder={placeholder}
       type={type}
       name={name}
@@ -39,17 +47,31 @@ function App() {
     withdraw();
   };
 
+  const handleLoan = (e) => {
+    const { loanAmount } = formData;
+    e.preventDefault();
+    if (!loanAmount) return;
+    loan();
+  };
+
   return (
     <div className="App">
       <h1>Bank</h1><br />
       <p>Takes ETH as the currency.</p><br />
       <hr />
-      Deposit: <Input type="text" name="depositAmount" handleChange={handleChange} />
+      <h2>Balance: {balance} ETH</h2><br />
+      <hr />
+      Deposit: <Input value={formData.depositAmount} type="text" name="depositAmount" handleChange={handleChange} />
       <button onClick={handleDeposit}>Deposit</button><br />
       <hr />
-      Withdraw: <Input type="text" name="withdrawAmount" handleChange={handleChange} />
+      Withdraw: <Input value={formData.withdrawAmount} type="text" name="withdrawAmount" handleChange={handleChange} />
       <button onClick={handleWithdraw}>Withdraw</button><br />
       <hr />
+
+      {/* Loan */}
+      {/* Loan: <Input value={formData.loanAmount} type="text" name="loanAmount" handleChange={handleChange} />
+      <button onClick={handleLoan}>Loan</button><br />
+      <hr /> */}
 
       {!currentAccount && (
         <button

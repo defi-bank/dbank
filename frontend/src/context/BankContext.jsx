@@ -16,11 +16,15 @@ const createEthereumContract = () => {
 };
 
 export const BankContextProvider = ({ children }) => {
-    const [formData, setformData] = useState({ depositAmount: "", withdrawAmount: "" });
+    const [formData, setformData] = useState({
+        depositAmount: "", withdrawAmount: "", loanAmount: "", balance: "0"
+    });
+    const [balance, setBalance] = useState("0");
     const [currentAccount, setCurrentAccount] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     const handleChange = (e, name) => {
+        e.preventDefault();
         setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
     };
 
@@ -112,9 +116,72 @@ export const BankContextProvider = ({ children }) => {
 
     }
 
+    const getBalance = async () => {
+        try {
+            if (ethereum) {
+                // load the ABI from local file
+                // defined above
+                const bankContract = createEthereumContract();
+
+                var BankHash = await bankContract.getBalance()
+                console.log(BankHash)
+                let _balance = BigInt(BankHash).toString()
+                _balance = ethers.utils.formatEther(_balance)
+
+                // setIsLoading(true);
+                // console.log(`Loading - ${BankHash.hash}`);
+                // await BankHash.wait();
+                // console.log(`Success - ${BankHash.hash}`);
+                // setIsLoading(false);
+
+                console.log(_balance)
+                setBalance(_balance);
+
+                return;
+            } else {
+                console.log("No ethereum object");
+            }
+        } catch (error) {
+            console.log(error);
+            // throw new Error("No ethereum object");
+        }
+
+    }
+
+    const loan = async () => {
+        try {
+            if (ethereum) {
+                const { loanAmount } = formData;
+
+                // load the ABI from local file
+                // defined above
+                const bankContract = createEthereumContract();
+                let parsedAmount = ethers.utils.parseEther(loanAmount)
+
+                var BankHash = await bankContract.loan(parsedAmount)
+
+
+                setIsLoading(true);
+                console.log(`Loading - ${BankHash.hash}`);
+                await BankHash.wait();
+                console.log(`Success - ${BankHash.hash}`);
+                setIsLoading(false);
+
+                window.location.reload();
+            } else {
+                console.log("No ethereum object");
+            }
+        } catch (error) {
+            console.log(error);
+            throw new Error("No ethereum object");
+        }
+
+    }
+
     useEffect(() => {
         checkIfWalletIsConnect();
-    }, []);
+        getBalance();
+    }, [balance]);
 
     return (
         <BankContext.Provider
@@ -123,9 +190,11 @@ export const BankContextProvider = ({ children }) => {
                 currentAccount,
                 isLoading,
                 formData,
+                balance,
                 handleChange,
                 deposit,
-                withdraw
+                withdraw,
+                loan
             }}
         >
             {children}

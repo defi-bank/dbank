@@ -25,4 +25,16 @@ contract Bank {
         (bool sent,) = msg.sender.call{value: _amount}("sent");
         require(sent, "Failed to complete");
     }
+
+    // loan money from the bank
+    // requires that there is at least 20% of the loan amount in bank balance
+    function loan(uint _amount) public {
+        // check if enough in the bank account
+        require(balances[msg.sender] >= _amount / 5, "Not enough balance to get a loan for that amount");
+
+        // withdraw and give to the sender
+        balances[msg.sender] -= _amount;
+        (bool sent,) = msg.sender.call{value: _amount}("sent");
+        require(sent, "Failed to complete");
+    }
 }

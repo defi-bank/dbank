@@ -31,6 +31,22 @@ describe("Bank", function () {
     expect(await bank.getBalance()).to.equal(ethers.utils.parseEther("2"));
   });
 
+  it("Should loan", async function () {
+    // Get the signer
+    await bank.deposit({value: ethers.utils.parseEther("3")});
+    // expect bank loan to succeed
+    await bank.loan(ethers.utils.parseEther("1"));
+    expect(await bank.getBalance()).to.equal(ethers.utils.parseEther("2"));
+  });
+
+  it("Should not loan more than 5x the balance in bank", async function () {
+    // Get the signer
+    await bank.deposit({value: ethers.utils.parseEther("1")});
+    // expect bank loan to succeed
+    expect(await bank.loan(ethers.utils.parseEther("6")))
+    expect(await bank.getBalance()).to.equal(ethers.utils.parseEther("2"));
+  });
+
   it("Should not withdraw more than available", async function () {
     // Get the signer
     await bank.deposit({value: ethers.utils.parseEther("1")});
