@@ -56,7 +56,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>_Bank_</h1>
+      <h1>_DBank_</h1>
       <div className="typewriter">
         <i>opes et potentiam</i>
       </div>
