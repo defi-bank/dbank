@@ -21,7 +21,9 @@ module.exports = {
     localhost: {
       url: process.env.TESTNET_URL_LOCALHOST,
       accounts: [
-        process.env.PRIVATE_KEY_LOCALHOST_WALLET
+        process.env.PRIVATE_KEY_LOCALHOST_WALLET_1,
+        process.env.PRIVATE_KEY_LOCALHOST_WALLET_2,
+        process.env.PRIVATE_KEY_LOCALHOST_WALLET_3
       ]
     },
   }

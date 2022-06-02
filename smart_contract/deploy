@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# INCOMPLETE
+
+# Deploy
+npx hardhat run scripts/deploy.js --network ropsten
+
+# copy artifacts into the proper folder
+
+
+# write the address to the file
+echo "0x"$(cat artifacts/contracts/Bank.json | jq -r '.contracts.Bank.address') > smart_contract/address.txt

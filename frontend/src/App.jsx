@@ -69,9 +69,9 @@ function App() {
       <hr />
 
       {/* Loan */}
-      {/* Loan: <Input value={formData.loanAmount} type="text" name="loanAmount" handleChange={handleChange} />
+      Loan: <Input value={formData.loanAmount} type="text" name="loanAmount" handleChange={handleChange} />
       <button onClick={handleLoan}>Loan</button><br />
-      <hr /> */}
+      <hr />
 
       {!currentAccount && (
         <button
