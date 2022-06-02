@@ -1,5 +1,55 @@
 .App {
   text-align: center;
+  font-family: monospace;
+}
+
+html {
+  background-color: black;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  height: 3rem;
+}
+
+input {
+  height: 100%;
+  color: white;
+  background-color: black;
+  border: 1px solid grey;
+}
+
+button {
+  background-color: #61fb69;
+  color: rgb(0, 0, 0);
+  padding: 4px;
+  height: 100%;
+}
+
+button {
+  width: 150px;
+}
+
+.option {
+  width: 150px;
+  display: inline;
+  font-size: large;
 }
 
 .App-logo {
@@ -39,4 +89,20 @@
 
 button {
   font-size: calc(10px + 2vmin);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 4px;
+}
+
+button:hover {
+  background-color: #222222;
+  color: rgb(28, 255, 122);
+  border: 1px solid grey;
+}
+
+button:active {
+  background-color: #61dafb;
+  color: white;
 }

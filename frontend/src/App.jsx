@@ -58,21 +58,27 @@ function App() {
     <div className="App">
       <h1>Bank</h1><br />
       <p>Takes ETH as the currency.</p><br />
-      <hr />
-      <h2>Balance: {balance} ETH</h2><br />
-      <hr />
-      Deposit: <Input value={formData.depositAmount} type="text" name="depositAmount" handleChange={handleChange} />
-      <button onClick={handleDeposit}>Deposit</button><br />
-      <hr />
-      Withdraw: <Input value={formData.withdrawAmount} type="text" name="withdrawAmount" handleChange={handleChange} />
-      <button onClick={handleWithdraw}>Withdraw</button><br />
-      <hr />
+      <h2>Bank Total Balance: {balance} ETH</h2><br />
 
-      {/* Loan */}
-      Loan: <Input value={formData.loanAmount} type="text" name="loanAmount" handleChange={handleChange} />
-      <button onClick={handleLoan}>Loan</button><br />
-      <hr />
+      <div className="container">
+        <div className="row">
+          <span class="option">Deposit:</span> 
+          <Input className="input" value={formData.depositAmount} type="text" name="depositAmount" handleChange={handleChange} />
+          <button className="" onClick={handleDeposit}>Deposit</button>
+        </div>
+        <div className="row">
+          <span class="option">Withdraw:</span> 
+          <Input className="input" value={formData.withdrawAmount} type="text" name="withdrawAmount" handleChange={handleChange} />
+          <button className="" onClick={handleWithdraw}>Withdraw</button>
+        </div>
 
+        {/* Loan */}
+        <div className="row">
+          <span class="option">Loan:</span> 
+          <Input className="input" value={formData.loanAmount} type="text" name="loanAmount" handleChange={handleChange} />
+          <button className="" onClick={handleLoan}>Loan</button>
+        </div>
+      </div>
       {!currentAccount && (
         <button
           type="button"
